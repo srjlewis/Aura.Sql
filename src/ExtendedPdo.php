@@ -94,7 +94,7 @@ class ExtendedPdo extends AbstractExtendedPdo
         ?ProfilerInterface $profiler = null
     ): static {
         $pdo = new static($dsn, $username, $password, $options ?? [], $queries, $profiler);
-        $pdo->autoConnect();
+        $pdo->establishConnection();
         return $pdo;
     }
 
@@ -104,7 +104,7 @@ class ExtendedPdo extends AbstractExtendedPdo
      *
      * @return void
      */
-    public function autoConnect(): void
+    public function establishConnection(): void
     {
         if ($this->pdo) {
             return;
@@ -169,7 +169,7 @@ class ExtendedPdo extends AbstractExtendedPdo
      */
     public function getPdo(): PDO
     {
-        $this->autoConnect();
+        $this->establishConnection();
         return $this->pdo;
     }
 }
