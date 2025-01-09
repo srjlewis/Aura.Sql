@@ -95,6 +95,17 @@ class ExtendedPdo extends AbstractExtendedPdo
      */
     public function connect(): void
     {
+        $this->establishConnection();
+    }
+
+    /**
+     *
+     * alias of connect() for interoperability with future versions Aura.Sql
+     *
+     * @return void
+     */
+    public function establishConnection(): void
+    {
         if ($this->pdo) {
             return;
         }
@@ -109,17 +120,6 @@ class ExtendedPdo extends AbstractExtendedPdo
         foreach ($queries as $query) {
             $this->exec($query);
         }
-    }
-
-    /**
-     *
-     * alias of connect() for interoperability with future versions Aura.Sql
-     *
-     * @return void
-     */
-    public function establishConnection(): void
-    {
-        $this->connect();
     }
 
     /**
@@ -165,7 +165,7 @@ class ExtendedPdo extends AbstractExtendedPdo
      */
     public function getPdo(): PDO
     {
-        $this->connect();
+        $this->establishConnection();
         return $this->pdo;
     }
 }

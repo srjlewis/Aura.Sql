@@ -27,8 +27,17 @@ interface ExtendedPdoInterface extends PdoInterface
      *
      * Connects to the database.
      *
+     * @deprecated use establishConnection() as future versions will be using establishConnection()
+     *
      */
     public function connect(): void;
+
+    /**
+     *
+     * Connects to the database.
+     *
+     */
+    public function establishConnection(): void;
 
     /**
      *

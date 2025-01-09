@@ -50,8 +50,21 @@ class DecoratedPdo extends AbstractExtendedPdo
      *
      * @return void
      *
+     * @deprecated use establishConnection() as future versions will be using establishConnection()
+     *
      */
     public function connect(): void
+    {
+        // already connected
+    }
+
+    /**
+     *
+     * Connects to the database.
+     *
+     * @return void
+     */
+    public function establishConnection(): void
     {
         // already connected
     }
