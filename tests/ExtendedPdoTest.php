@@ -71,6 +71,11 @@ class ExtendedPdoTest extends TestCase
         $this->pdo->perform($stm, $data);
     }
 
+    public function testPdoType()
+    {
+        $this->assertNotInstanceOf(Pdo\Sqlite::class, $this->pdo->getPdo());
+    }
+
     public function testCall()
     {
         if (defined('HHVM_VERSION')) {
