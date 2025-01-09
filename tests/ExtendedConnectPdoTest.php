@@ -11,6 +11,9 @@ class ExtendedConnectPdoTest extends \Aura\Sql\ExtendedPdoTest
 
     public function testPdoType()
     {
+        if(version_compare(PHP_VERSION, '8.4', '<')) {
+            $this->markTestSkipped('PHP 8.4+ required for this test.');
+        }
         $this->assertInstanceOf(Pdo\Sqlite::class, $this->pdo->getPdo());
     }
 }

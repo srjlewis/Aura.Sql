@@ -73,6 +73,9 @@ class ExtendedPdoTest extends TestCase
 
     public function testPdoType()
     {
+        if(version_compare(PHP_VERSION, '8.4', '<')) {
+            $this->markTestSkipped('PHP 8.4+ required for this test.');
+        }
         $this->assertNotInstanceOf(Pdo\Sqlite::class, $this->pdo->getPdo());
     }
 
