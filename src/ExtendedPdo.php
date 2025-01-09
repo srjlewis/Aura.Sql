@@ -6,6 +6,7 @@
  * @license https://opensource.org/licenses/MIT MIT
  *
  */
+
 namespace Aura\Sql;
 
 use Aura\Sql\Profiler\Profiler;
@@ -41,6 +42,7 @@ class ExtendedPdo extends AbstractExtendedPdo
      * @var bool
      */
     protected bool $driverSpecific = false;
+
     /**
      *
      * Constructor.
@@ -48,15 +50,15 @@ class ExtendedPdo extends AbstractExtendedPdo
      * This overrides the parent so that it can take connection attributes as a
      * constructor parameter, and set them after connection.
      *
-     * @param string $dsn The data source name for the connection.
+     * @param string                                    $dsn      The data source name for the connection.
      *
-     * @param string|null $username The username for the connection.
+     * @param string|null                               $username The username for the connection.
      *
-     * @param string|null $password The password for the connection.
+     * @param string|null                               $password The password for the connection.
      *
-     * @param array $options Driver-specific options for the connection.
+     * @param array                                     $options  Driver-specific options for the connection.
      *
-     * @param array $queries Queries to execute after the connection.
+     * @param array                                     $queries  Queries to execute after the connection.
      *
      * @param \Aura\Sql\Profiler\ProfilerInterface|null $profiler Tracks and logs query profiles.
      *
@@ -71,13 +73,13 @@ class ExtendedPdo extends AbstractExtendedPdo
         ?ProfilerInterface $profiler = null
     ) {
         // if no error mode is specified, use exceptions
-        if (! isset($options[PDO::ATTR_ERRMODE])) {
+        if (!isset($options[PDO::ATTR_ERRMODE])) {
             $options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
         }
 
         // check option for driver specific construct and set flag for lazy loading later
         if (isset($options[static::DRIVER_SPECIFIC])) {
-            $this->driverSpecific = (bool) $options[static::DRIVER_SPECIFIC];
+            $this->driverSpecific = (bool)$options[static::DRIVER_SPECIFIC];
             unset($options[static::DRIVER_SPECIFIC]);
         }
 
@@ -94,7 +96,7 @@ class ExtendedPdo extends AbstractExtendedPdo
         $this->setProfiler($profiler ?? new Profiler());
 
         // retain a query parser
-        $parts = explode(':', $dsn);
+        $parts  = explode(':', $dsn);
         $parser = $this->newParser($parts[0]);
         $this->setParser($parser);
 
@@ -103,11 +105,10 @@ class ExtendedPdo extends AbstractExtendedPdo
 
         // create a connection immediately
         if (isset($options[static::CONNECT_IMMEDIATELY])) {
-            if($options[static::CONNECT_IMMEDIATELY]) {
-                unset($options[static::CONNECT_IMMEDIATELY]);
+            $connectImmediately = (bool)$options[static::CONNECT_IMMEDIATELY];
+            unset($options[static::CONNECT_IMMEDIATELY]);
+            if ($connectImmediately) {
                 $this->establishConnection();
-            } else {
-                unset($options[static::CONNECT_IMMEDIATELY]);
             }
         }
     }
@@ -120,7 +121,7 @@ class ExtendedPdo extends AbstractExtendedPdo
         array $queries = [],
         ?ProfilerInterface $profiler = null
     ): static {
-        $options ??= [];
+        $options                          ??= [];
         $options[static::DRIVER_SPECIFIC] = true;
         return new static($dsn, $username, $password, $options, $queries, $profiler);
     }
@@ -140,7 +141,7 @@ class ExtendedPdo extends AbstractExtendedPdo
         // connect
         $this->profiler->start(__FUNCTION__);
         list($dsn, $username, $password, $options, $queries) = $this->args;
-        if ($this->driverSpecific) {
+        if ($this->driverSpecific && version_compare(PHP_VERSION, '8.4.0', '>=')) {
             $this->pdo = PDO::connect($dsn, $username, $password, $options);
         } else {
             $this->pdo = new PDO($dsn, $username, $password, $options);
