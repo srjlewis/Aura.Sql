@@ -164,7 +164,7 @@ class ExtendedPdo extends AbstractExtendedPdo
      */
     public function getPdo(): PDO
     {
-        $this->establishConnection();
+        $this->lazyConnect();
         return $this->pdo;
     }
 }

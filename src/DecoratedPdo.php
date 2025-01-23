@@ -50,7 +50,7 @@ class DecoratedPdo extends AbstractExtendedPdo
      *
      * @return void
      *
-     * @deprecated use establishConnection() as future versions will be using establishConnection()
+     * @deprecated use lazyConnect() as future versions will be using lazyConnect()
      *
      */
     public function connect(): void
