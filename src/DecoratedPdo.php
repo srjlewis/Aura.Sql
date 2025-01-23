@@ -51,8 +51,13 @@ class DecoratedPdo extends AbstractExtendedPdo
         ?array $options = null,
         ?ProfilerInterface $profiler = null
     ): static {
-        return new static(new PDO($dsn, $username, $password, $options), $profiler);
+        if (version_compare(PHP_VERSION, '8.4.0', '>=')) {
+            return new static(\PDO::connect($dsn, $username, $password, $options));
+        } else {
+            return new static(new PDO($dsn, $username, $password, $options), $profiler);
+        }
     }
+
     /**
      *
      * Connects to the database.
@@ -60,7 +65,7 @@ class DecoratedPdo extends AbstractExtendedPdo
      * @return void
      *
      */
-    public function establishConnection(): void
+    public function lazyConnect(): void
     {
         // already connected
     }

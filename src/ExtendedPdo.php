@@ -108,7 +108,7 @@ class ExtendedPdo extends AbstractExtendedPdo
             $connectImmediately = (bool)$options[static::CONNECT_IMMEDIATELY];
             unset($options[static::CONNECT_IMMEDIATELY]);
             if ($connectImmediately) {
-                $this->establishConnection();
+                $this->lazyConnect();
             }
         }
     }
@@ -132,7 +132,7 @@ class ExtendedPdo extends AbstractExtendedPdo
      *
      * @return void
      */
-    public function establishConnection(): void
+    public function lazyConnect(): void
     {
         if ($this->pdo) {
             return;
@@ -184,7 +184,7 @@ class ExtendedPdo extends AbstractExtendedPdo
                 '****',
                 $this->args[3],
                 $this->args[4],
-            ]
+            ],
         ];
     }
 
@@ -197,7 +197,7 @@ class ExtendedPdo extends AbstractExtendedPdo
      */
     public function getPdo(): PDO
     {
-        $this->establishConnection();
+        $this->lazyConnect();
         return $this->pdo;
     }
 }
