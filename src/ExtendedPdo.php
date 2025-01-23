@@ -122,6 +122,7 @@ class ExtendedPdo extends AbstractExtendedPdo
         }
     }
 
+    /**
      * Disconnects from the database.
      *
      * @return void
